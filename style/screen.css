@@ -1,6 +1,7 @@
-#canvasImage {
-}
-
 #inputImageFile {
     display: block;
+}
+
+#elementImage {
+    display: none;
 }

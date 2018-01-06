@@ -1,1 +1,23 @@
+.DS_Store
+
+# dev stuff
 server.js
+
+# ftp
+.ftpauth
+
+# grunt
+grunttasks/ftpPut.js
+grunttasks/ftpPut.js.orig
+
+# firebase
+.firebaserc
+storage.rules
+firebase.json
+
+# npm
+npm-debug.log
+
+# node
+node_modules
+package.json

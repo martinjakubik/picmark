@@ -13,7 +13,7 @@ var imageFileSelected = function () {
 
         var oCanvasContext = oElementCanvasImage.getContext('2d');
 
-        var oElementImg = document.createElement('img');
+        var oElementImg = document.getElementById('elementImage');
         oElementImg.file = oImageFile;
 
         var oFileReader = new FileReader();
@@ -29,7 +29,7 @@ var imageFileSelected = function () {
 
         // draws the images once it's loaded
         oElementImg.onload = function () {
-            oCanvasContext.drawImage(oElementImg, 0, 0, 200, 150);
+            oCanvasContext.drawImage(oElementImg, 0, 0);
         };
 
         oFileReader.readAsDataURL(oImageFile);
@@ -38,8 +38,8 @@ var imageFileSelected = function () {
 
 var bodyLoaded = function () {
 
-    var prevX = -1;
-    var prevY = -1;
+    var prevX = -31;
+    var prevY = -31;
 
     var oElementCanvasImage = document.getElementById('canvasImage');
 
@@ -54,10 +54,9 @@ var bodyLoaded = function () {
 
         var oCanvasContext = oElementCanvasImage.getContext('2d');
 
-        oCanvasContext.strokeStyle = 'white';
-        oCanvasContext.beginPath();
-        oCanvasContext.arc(prevX, prevY, nRadius, 0, 3 * Math.PI);
-        oCanvasContext.stroke();
+        var oElementImg = document.getElementById('elementImage');
+
+        oCanvasContext.drawImage(oElementImg, 0, 0);
 
         prevX = x;
         prevY = y;
@@ -67,7 +66,13 @@ var bodyLoaded = function () {
         oCanvasContext.arc(x, y, nRadius, 0, 3 * Math.PI);
         oCanvasContext.stroke();
 
-        console.log('canvas clicked at: x = \'' + x + '\' y = \'' + y + '\'');
+        var oButtonSubmit = document.getElementById('buttonSubmit');
+        if (!oButtonSubmit) {
+            oButtonSubmit = document.createElement('button');
+            oButtonSubmit.id = 'buttonSubmit';
+            oButtonSubmit.innerHTML = 'Submit your guess';
+            document.body.insertBefore(oButtonSubmit, null);
+        }
     });
 
 };
