@@ -7,9 +7,29 @@ var imageFileSelected = function () {
 
     var oElementCanvasImage = document.getElementById('canvasImage');
 
+    var oAuth = firebase.auth();
+    var oStorageRef = firebase.storage().ref();
+
     if (aImageFiles.length === 1) {
 
         oImageFile = aImageFiles[0];
+
+        var oMetadata = {
+            'contentType': oImageFile.type
+        };
+
+        // pushes file to storage at child path
+        oStorageRef.child('images/' + oImageFile.name).put(oImageFile, oMetadata).then(function(oSnapshot) {
+
+            console.log('uploaded', oSnapshot.totalBytes, 'bytes');
+            console.log(oSnapshot.metadata);
+
+            var sUrl = oSnapshot.downloadURL;
+            console.log('file available at: ', sUrl);
+
+        }).catch(function(oError) {
+            console.error('upload failed: ', oError);
+        });
 
         var oCanvasContext = oElementCanvasImage.getContext('2d');
 
@@ -74,5 +94,4 @@ var bodyLoaded = function () {
             document.body.insertBefore(oButtonSubmit, null);
         }
     });
-
 };
