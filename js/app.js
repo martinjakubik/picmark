@@ -10,10 +10,7 @@ var imageFileSelected = function () {
     var oAuth = firebase.auth();
     var oStorageRef = firebase.storage().ref();
 
-    if (aImageFiles.length === 1) {
-
-        oImageFile = aImageFiles[0];
-
+    var fnPushFileToStorage = function (oImageFile) {
         var oMetadata = {
             'contentType': oImageFile.type
         };
@@ -30,6 +27,9 @@ var imageFileSelected = function () {
         }).catch(function(oError) {
             console.error('upload failed: ', oError);
         });
+    };
+
+    var fnDrawImageOnCanvas = function (oImageFile) {
 
         var oCanvasContext = oElementCanvasImage.getContext('2d');
 
@@ -53,6 +53,14 @@ var imageFileSelected = function () {
         };
 
         oFileReader.readAsDataURL(oImageFile);
+    };
+
+    if (aImageFiles.length === 1) {
+
+        oImageFile = aImageFiles[0];
+
+        fnDrawImageOnCanvas(oImageFile);
+        fnPushFileToStorage(oImageFile);
     }
 };
 
