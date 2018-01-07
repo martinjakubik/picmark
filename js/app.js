@@ -1,5 +1,50 @@
 class Picmark {
 
+    static handleAuthenticationStateChange (oUser) {
+
+        if (oUser) {
+
+            // user is signed in
+            var sDisplayName = oUser.displayName;
+            var sEmail = oUser.email;
+            var bEmailVerified = oUser.emailVerified;
+            var oPhotoUrl = oUser.photoURL;
+            var bIsAnonymous = oUser.isAnonymous;
+            var sUid = oUser.uid;
+            var oProviderData = oUser.providerData;
+
+        } else {
+            // user is signed out
+
+        }
+    };
+
+    static signIn () {
+
+        var oAuth = firebase.auth();
+
+        oAuth.onAuthStateChanged(Picmark.handleAuthenticationStateChange);
+
+        // var oAuthenticationProvider = new oAuth.GoogleAuthProvider();
+        var oAuthenticationProvider = new firebase.auth.GoogleAuthProvider();
+
+        oAuth.signInWithRedirect(oAuthenticationProvider);
+
+        oAuth.getRedirectResult().then(function (oResult) {
+
+            var oToken = oResult.credential.accessToken;
+            var oUser = oResult.user;
+
+        }).catch(function (oError) {
+
+            var sErrorCode = oError.code;
+            var sErrorMessage = oError.message;
+            var sEmail = oError.email;
+            var sCredential = oError.credential;
+
+        });
+    };
+
     static imageFileSelected () {
 
         var oInputImageFile = document.getElementById('inputImageFile');
@@ -9,7 +54,6 @@ class Picmark {
 
         var oElementCanvasImage = document.getElementById('canvasImage');
 
-        var oAuth = firebase.auth();
         var oStorageRef = firebase.storage().ref();
 
         var fnPushFileToStorage = function (oImageFile) {
@@ -106,20 +150,4 @@ class Picmark {
         });
     };
 
-    static handleAuthenticationStateChange (oUser) {
-
-        if (oUser) {
-            // user is signed in
-            var sDisplayName = oUser.displayName;
-            var sEmail = oUser.email;
-            var bEmailVerified = oUser.emailVerified;
-            var oPhotoUrl = oUser.photoURL;
-            var bIsAnonymous = oUser.isAnonymous;
-            var sUid = oUser.uid;
-            var oProviderData = oUser.providerData;
-        } else {
-            // user is signed out
-
-        }
-    };
 };
