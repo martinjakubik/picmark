@@ -1,0 +1,36 @@
+var http = require('http');
+var fs = require('fs');
+var url = require('url');
+var path = require('path');
+var sBaseDirectory = '<basedir>';
+var nPort = 2701;
+
+http.createServer(function (request, response) {
+
+    try {
+
+        // note: this will serve only http://yourdomain/index.html
+        //  it won't work for http://yourdomain
+
+        var oUrl = url.parse(request.url);
+        var sPath = sBaseDirectory + path.normalize(oUrl.pathname);
+
+        var oFileStream = fs.createReadStream(sPath);
+
+        oFileStream.pipe(response);
+        oFileStream.on('open', function () {
+            response.writeHead(200);
+        });
+
+        oFileStream.on('error', function () {
+            response.writeHead(404);
+            response.end();
+        });
+
+    } catch(e) {
+        response.writeHead(500);
+        response.end();
+        console.log(e.stack);
+    }
+
+}).listen(nPort);
