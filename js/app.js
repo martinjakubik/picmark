@@ -64,14 +64,16 @@ class Picmark {
             // pushes file to storage at child path
             oStorageRef.child('images/' + oImageFile.name).put(oImageFile, oMetadata).then(function(oSnapshot) {
 
-                console.log('uploaded', oSnapshot.totalBytes, 'bytes');
-                console.log(oSnapshot.metadata);
-
                 var sUrl = oSnapshot.downloadURL;
-                console.log('file available at: ', sUrl);
+
+                var oElementMessage = document.getElementById('elementMessage');
+                oElementMessage.innerHTML = 'You successfully uploaded the file: \'' + oImageFile.name + '\' to: ' + sUrl;
 
             }).catch(function(oError) {
-                console.error('upload failed: ', oError);
+
+                var oElementMessage = document.getElementById('elementMessage');
+                oElementMessage.innerHTML = 'The upload failed:  + oError + ';
+
             });
         };
 
@@ -112,6 +114,9 @@ class Picmark {
 
     static bodyLoaded () {
 
+        // var oElementMessage = document.getElementById('elementMessage');
+        // oElementMessage.innerHTML = 'Welcome, ' + sDisplayName + '. You\'re signed in.';
+
         var prevX = -31;
         var prevY = -31;
 
@@ -149,5 +154,4 @@ class Picmark {
             }
         });
     };
-
 };
