@@ -1,4 +1,8 @@
-var imageFileSelected = function () {
+class Picmark {
+
+};
+
+Picmark.imageFileSelected = function () {
 
     var oInputImageFile = document.getElementById('inputImageFile');
 
@@ -64,7 +68,7 @@ var imageFileSelected = function () {
     }
 };
 
-var bodyLoaded = function () {
+Picmark.bodyLoaded = function () {
 
     var prevX = -31;
     var prevY = -31;
