@@ -24,12 +24,12 @@
         <link rel="stylesheet" type="text/css" href="../style/screen.css"></stylesheet>
     </head>
 
-    <body onload="Picmark.bodyLoaded()">
+    <body onload="Picmark.start()">
 
         <h1>Where's Waldo?</h1>
 
         <canvas id="canvasImage" height="600" width="1000"></canvas>
-        <button id="inputSignIn" name="inputSignIn" onclick="Picmark.signIn()">Sign in</button>
+        <button id="inputSignIn" name="inputSignIn">Sign in</button>
         <input id="inputImageFile" name="inputImageFile" type="file" accept=".jpg, .jpeg" onchange="Picmark.imageFileSelected()"></input>
         <img id="elementImage"></img>
 

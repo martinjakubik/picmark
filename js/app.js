@@ -1,5 +1,12 @@
 class Picmark {
 
+    constructor () {
+
+        this.user = null;
+        this.authentication = firebase.auth();
+
+    };
+
     static handleAuthenticationStateChange (oUser) {
 
         if (oUser) {
@@ -19,7 +26,7 @@ class Picmark {
         }
     };
 
-    static signIn () {
+    signIn (oEvent) {
 
         var oAuth = firebase.auth();
 
@@ -57,8 +64,9 @@ class Picmark {
         var oStorageRef = firebase.storage().ref();
 
         var fnPushFileToStorage = function (oImageFile) {
+
             var oMetadata = {
-                'contentType': oImageFile.type
+                'contentType': oImageFile.type,
             };
 
             // pushes file to storage at child path
@@ -112,13 +120,18 @@ class Picmark {
         }
     };
 
-    static bodyLoaded () {
+    static start () {
+
+        var picmark = new Picmark();
 
         // var oElementMessage = document.getElementById('elementMessage');
         // oElementMessage.innerHTML = 'Welcome, ' + sDisplayName + '. You\'re signed in.';
 
         var prevX = -31;
         var prevY = -31;
+
+        var oElementSignIn = document.getElementById('inputSignIn');
+        oElementSignIn.addEventListener('click', picmark.signIn);
 
         var oElementCanvasImage = document.getElementById('canvasImage');
 
