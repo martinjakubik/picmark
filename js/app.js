@@ -3,7 +3,6 @@ class Picmark {
     constructor () {
 
         this.user = null;
-        this.authentication = firebase.auth();
 
     };
 
@@ -32,7 +31,6 @@ class Picmark {
 
         oAuth.onAuthStateChanged(Picmark.handleAuthenticationStateChange);
 
-        // var oAuthenticationProvider = new oAuth.GoogleAuthProvider();
         var oAuthenticationProvider = new firebase.auth.GoogleAuthProvider();
 
         oAuth.signInWithRedirect(oAuthenticationProvider);
@@ -50,9 +48,10 @@ class Picmark {
             var sCredential = oError.credential;
 
         });
+
     };
 
-    static imageFileSelected () {
+    imageFileSelected () {
 
         var oInputImageFile = document.getElementById('inputImageFile');
 
@@ -63,10 +62,15 @@ class Picmark {
 
         var oStorageRef = firebase.storage().ref();
 
-        var fnPushFileToStorage = function (oImageFile) {
+        var fnPushFileToStorage = function (oImageFile, oUser) {
+
+            var oCustomMetadata = {
+                'maker': oUser.id
+            };
 
             var oMetadata = {
                 'contentType': oImageFile.type,
+                'customMetadata': oCustomMetadata
             };
 
             // pushes file to storage at child path
@@ -115,8 +119,20 @@ class Picmark {
 
             oImageFile = aImageFiles[0];
 
-            fnDrawImageOnCanvas(oImageFile);
-            fnPushFileToStorage(oImageFile);
+            var oUser = firebase.auth().currentUser;
+
+            if (oUser) {
+
+                fnDrawImageOnCanvas(oImageFile);
+                fnPushFileToStorage(oImageFile, oUser);
+
+            } else {
+
+                var oElementMessage = document.getElementById('elementMessage');
+                oElementMessage.innerHTML = 'You are not signed in. Did you click Sign in?';
+
+            }
+
         }
     };
 
@@ -132,6 +148,9 @@ class Picmark {
 
         var oElementSignIn = document.getElementById('inputSignIn');
         oElementSignIn.addEventListener('click', picmark.signIn);
+
+        var oElementImageFile = document.getElementById('inputImageFile');
+        oElementImageFile.addEventListener('change', picmark.imageFileSelected);
 
         var oElementCanvasImage = document.getElementById('canvasImage');
 
